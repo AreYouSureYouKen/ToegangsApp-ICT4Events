@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HHuurder.cs" />
+    <Compile Include="Huurder.cs" />
     <Compile Include="ToegangsAppForm.cs">
       <SubType>Form</SubType>
     </Compile>
