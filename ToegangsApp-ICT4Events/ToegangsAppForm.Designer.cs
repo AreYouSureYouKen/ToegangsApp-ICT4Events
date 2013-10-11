@@ -80,12 +80,14 @@
             // btnCheckRFID
             // 
             this.btnCheckRFID.AutoSize = true;
+            this.btnCheckRFID.Enabled = false;
             this.btnCheckRFID.Location = new System.Drawing.Point(297, 45);
             this.btnCheckRFID.Name = "btnCheckRFID";
             this.btnCheckRFID.Size = new System.Drawing.Size(92, 27);
             this.btnCheckRFID.TabIndex = 4;
             this.btnCheckRFID.Text = "Check RFID";
             this.btnCheckRFID.UseVisualStyleBackColor = true;
+            this.btnCheckRFID.Click += new System.EventHandler(this.btnCheckRFID_Click);
             // 
             // btnGevAanpass
             // 
