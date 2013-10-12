@@ -19,28 +19,34 @@ namespace ToegangsApp_ICT4Events
         {
             InitializeComponent();
             rfid = new RFID();
-            rfid.Attach += new AttachEventHandler(rfid_attach);
-            rfid.Tag += new TagEventHandler(rfid_tag);
+            rfid.Attach += new AttachEventHandler(rfid_Attach);
+            rfid.Detach += new DetachEventHandler(rfid_Detach);
+            rfid.Tag += new TagEventHandler(rfid_Tag);
+            rfid.TagLost += new TagEventHandler(rfid_TagLost);
             rfid.open();
         }
 
-        void rfid_attach(object sender, AttachEventArgs e)
+        void rfid_Attach(object sender, AttachEventArgs e)
         {
             RFID attached = (RFID)sender;
             rfid.Antenna = Enabled;
             btnBetaal.Enabled = true;
-            btnCheckRFID.Enabled = true;
             rfid.LED = true;
         }
 
-        void rfid_tag(object sender, TagEventArgs e)
+        void rfid_Detach(object sender, DetachEventArgs e)
+        {
+            btnBetaal.Enabled = false;
+        }
+
+        void rfid_Tag(object sender, TagEventArgs e)
         {
             lblCheckin.Text = e.Tag;
         }
-        
-        private void btnCheckRFID_Click(object sender, EventArgs e)
-        {
 
+        void rfid_TagLost(object sender, TagEventArgs e)
+        {
+            lblCheckin.Text = "Check -in/-uit";
         }
 
     }
