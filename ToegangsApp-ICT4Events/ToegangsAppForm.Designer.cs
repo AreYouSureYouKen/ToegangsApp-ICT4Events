@@ -38,6 +38,7 @@
             // 
             this.lblBetaald.AutoSize = true;
             this.lblBetaald.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBetaald.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblBetaald.Location = new System.Drawing.Point(12, 9);
             this.lblBetaald.Name = "lblBetaald";
             this.lblBetaald.Size = new System.Drawing.Size(284, 36);
@@ -74,6 +75,7 @@
             this.btnZoekPersForm.TabIndex = 3;
             this.btnZoekPersForm.Text = "Zoek Persoon";
             this.btnZoekPersForm.UseVisualStyleBackColor = true;
+            this.btnZoekPersForm.Click += new System.EventHandler(this.btnZoekPersForm_Click);
             // 
             // ToegangsAppForm
             // 

@@ -15,6 +15,7 @@ namespace ToegangsApp_ICT4Events
     public partial class ToegangsAppForm : Form
     {
         private RFID rfid;
+        private ToegangManager toegang;
         public ToegangsAppForm()
         {
             InitializeComponent();
@@ -41,12 +42,28 @@ namespace ToegangsApp_ICT4Events
 
         void rfid_Tag(object sender, TagEventArgs e)
         {
-            lblCheckin.Text = e.Tag;
+            new ToegangManager();
+            bool aanwezigheid = toegang.VeranderAanAfwezig(e.Tag);
+            if (aanwezigheid == false)
+            {
+                lblCheckin.Text = "Check in";
+            }
+            else if (aanwezigheid == true)
+            {
+                lblCheckin.Text = "Check uit";
+            }
         }
 
         void rfid_TagLost(object sender, TagEventArgs e)
         {
             lblCheckin.Text = "Check -in/-uit";
+            System.Threading.Thread.Sleep(2000);
+        }
+
+        private void btnZoekPersForm_Click(object sender, EventArgs e)
+        {
+            ZoekPersForm zoekpersoon = new ZoekPersForm();
+            zoekpersoon.Show();
         }
 
     }
