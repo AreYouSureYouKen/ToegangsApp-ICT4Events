@@ -32,6 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnZoekPers = new System.Windows.Forms.Button();
             this.btnLinkRFID = new System.Windows.Forms.Button();
+            this.lblNaam = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tbDocNr
@@ -53,34 +54,49 @@
             // btnZoekPers
             // 
             this.btnZoekPers.AutoSize = true;
-            this.btnZoekPers.Location = new System.Drawing.Point(152, 9);
+            this.btnZoekPers.Location = new System.Drawing.Point(121, 4);
             this.btnZoekPers.Name = "btnZoekPers";
             this.btnZoekPers.Size = new System.Drawing.Size(107, 27);
             this.btnZoekPers.TabIndex = 2;
             this.btnZoekPers.Text = "Zoek Persoon";
             this.btnZoekPers.UseVisualStyleBackColor = true;
+            this.btnZoekPers.Click += new System.EventHandler(this.btnZoekPers_Click);
             // 
             // btnLinkRFID
             // 
             this.btnLinkRFID.AutoSize = true;
-            this.btnLinkRFID.Location = new System.Drawing.Point(152, 42);
+            this.btnLinkRFID.Enabled = false;
+            this.btnLinkRFID.Location = new System.Drawing.Point(234, 4);
             this.btnLinkRFID.Name = "btnLinkRFID";
             this.btnLinkRFID.Size = new System.Drawing.Size(75, 27);
             this.btnLinkRFID.TabIndex = 3;
             this.btnLinkRFID.Text = "LinkRFID";
             this.btnLinkRFID.UseVisualStyleBackColor = true;
+            this.btnLinkRFID.Click += new System.EventHandler(this.btnLinkRFID_Click);
+            // 
+            // lblNaam
+            // 
+            this.lblNaam.AutoSize = true;
+            this.lblNaam.Location = new System.Drawing.Point(13, 51);
+            this.lblNaam.Name = "lblNaam";
+            this.lblNaam.Size = new System.Drawing.Size(49, 17);
+            this.lblNaam.TabIndex = 4;
+            this.lblNaam.Text = "Naam:";
             // 
             // ZoekPersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 78);
+            this.ClientSize = new System.Drawing.Size(319, 78);
+            this.Controls.Add(this.lblNaam);
             this.Controls.Add(this.btnLinkRFID);
             this.Controls.Add(this.btnZoekPers);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbDocNr);
             this.Name = "ZoekPersForm";
             this.Text = "ZoekPersForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Close_Click);
+            this.Load += new System.EventHandler(this.ZoekPersForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -92,5 +108,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnZoekPers;
         private System.Windows.Forms.Button btnLinkRFID;
+        private System.Windows.Forms.Label lblNaam;
     }
 }
