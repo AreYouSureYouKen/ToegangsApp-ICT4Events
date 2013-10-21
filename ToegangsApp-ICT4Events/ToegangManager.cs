@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Phidgets;
 using Phidgets.Events;
+using System.Data;
 
 namespace ToegangsApp_ICT4Events
 {
@@ -13,42 +14,66 @@ namespace ToegangsApp_ICT4Events
         private Interface_ICT4events.DBconnect connectie = Interface_ICT4events.DBconnect.Instantie;
         public bool VeranderAanAfwezig(string RFIDtag)
         {
-            bool aanwezigheid;
-            string[] AanAfwezig = connectie.Select("bezoeker", "*", "RFID = '" +RFIDtag+"'");
-            if (AanAfwezig[6] == "Y")
+            try
             {
-                connectie.Update("bezoeker", "Aanwezig = N", "BezoekerID = '" +AanAfwezig[0]+"'");
-                aanwezigheid = false;
+                bool aanwezigheid;
+                DataRow AanAfwezig = connectie.SingleSelect("bezoeker", "BezoekerID,Aanwezig", "RFID = '" + RFIDtag + "'");
+                if (AanAfwezig["Aanwezig"].ToString() == "Y")
+                {
+                    connectie.Update("bezoeker", "Aanwezig = 'N'", "BezoekerID = '" + AanAfwezig["BezoekerID"].ToString() + "'");
+                    aanwezigheid = false;
+                }
+                else
+                {
+                    connectie.Update("bezoeker", "Aanwezig = 'Y'", "BezoekerID = '" + AanAfwezig["BezoekerID"].ToString() + "'");
+                    aanwezigheid = true;
+                }
+                return aanwezigheid;
             }
-            else
+            catch
             {
-                connectie.Update("bezoeker", "Aanwezig = Y", "BezoekerID = '" +AanAfwezig[0]+"'");
-                aanwezigheid = true;
+                return false;
             }
-            return aanwezigheid;
         }
 
 
         public string ZoekPersoon(string DocumentNr)
         {
-            string[] naam = connectie.Select("Bezoeker", "*", "Documentnr = '" + DocumentNr+"'");
-            return naam[2];
+            DataRow naam = connectie.SingleSelect("Bezoeker", "*", "Documentnr = '" + DocumentNr+"'");
+            return naam["Naam"].ToString();
         }
         private RFID rfid = new RFID();
         public string LinkRFID(string DocumentNr)
         {
-            rfid.open();
-            string antwoord = "Geen RFID aangesloten";
-            if (rfid.Attached == true)
+            try
             {
-                antwoord = "Geen RFID tag gevonden";
-                if (rfid.TagPresent == true)
+                rfid.open();
+                rfid.waitForAttachment(2000);
+                string antwoord = "Geen RFID aangesloten";
+                if (rfid.Attached == true)
                 {
+                    antwoord = "Geen RFID tag gevonden";
+                    for (int i = 0; rfid.TagPresent == false; i++ )
+                    {
+                        if (i == 10000000)
+                        {
+                            break;
+                        }
+                        if (rfid.TagPresent == true)
+                        {
+                            break;
+                        }
+                    }
                     connectie.Update("Bezoeker", "RFID = '" + rfid.LastTag + "'", "documentnr ='" + DocumentNr + "'");
                     antwoord = "RFID Link succesvol";
+
                 }
+                return antwoord;
             }
-            return antwoord;
+            catch(PhidgetException)
+            {
+                return "Error.";
+            }
             
         }
 

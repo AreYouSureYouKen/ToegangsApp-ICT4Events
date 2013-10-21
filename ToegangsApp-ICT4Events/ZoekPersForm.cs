@@ -36,7 +36,7 @@ namespace ToegangsApp_ICT4Events
 
         }
 
-        private void Close_Click(object sender, FormClosingEventArgs e)
+        private void Close_Click(object sender, FormClosedEventArgs e)
         {
             ToegangsAppForm toegang = new ToegangsAppForm();
             toegang.Show();

@@ -125,26 +125,20 @@ namespace Interface_ICT4events {
         }
 
         //Select statement
-        public string[] Select(string tabel, string velden, string waar) {
+        public DataRow SingleSelect(string tabel, string velden, string waar = "1")
+        {
 
-            if (this.OpenConnection() == true) {
-                MySqlDataReader reader = null;
+            DataTable data = new DataTable();
+            if (this.OpenConnection() == true)
+            {
                 string query = "SELECT " + velden + " FROM " + tabel + " WHERE " + waar + ";";
-                string[] data = new string[(Count("`INFORMATION_SCHEMA`.`COLUMNS`", "`TABLE_SCHEMA`='" + database + "' AND `TABLE_NAME`='" + tabel + "'"))];
-                if (this.OpenConnection() == true) {
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
-                    reader = cmd.ExecuteReader();
-                    while (reader.Read()) {
-                        for (int i = 0; i < (data.Length ); i++) {
-                            data[i] = reader.GetString(i);
-                        }
-                        reader.Close();
-                        return data;
-                    }                   
-                }
-                this.CloseConnection();
+                Console.WriteLine(query);
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                data.Load(cmd.ExecuteReader());
             }
-            return null;
+            DataRow rij = data.Rows[0];
+            return rij;
+
         }
 
         //select multiple

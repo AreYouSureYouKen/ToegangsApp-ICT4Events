@@ -95,7 +95,7 @@
             this.Controls.Add(this.tbDocNr);
             this.Name = "ZoekPersForm";
             this.Text = "ZoekPersForm";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Close_Click);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Close_Click);
             this.Load += new System.EventHandler(this.ZoekPersForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

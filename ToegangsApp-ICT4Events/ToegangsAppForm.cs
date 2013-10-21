@@ -31,13 +31,13 @@ namespace ToegangsApp_ICT4Events
         {
             RFID attached = (RFID)sender;
             rfid.Antenna = Enabled;
-            btnBetaal.Enabled = true;
             rfid.LED = true;
+            lblCheckin.Text = "Check -in/-uit";
         }
 
         void rfid_Detach(object sender, DetachEventArgs e)
         {
-            btnBetaal.Enabled = false;
+            lblCheckin.Text = "...";
         }
 
         void rfid_Tag(object sender, TagEventArgs e)
@@ -45,22 +45,21 @@ namespace ToegangsApp_ICT4Events
             bool aanwezigheid = toegang.VeranderAanAfwezig(e.Tag);
             if (aanwezigheid == false)
             {
-                lblCheckin.Text = "Check in";
-                lblCheckin.ForeColor = System.Drawing.Color.Green;
+                lblCheckin.ForeColor = System.Drawing.Color.Red;
+                lblCheckin.Text = "Check uit";
             }
             else if (aanwezigheid == true)
             {
-                lblCheckin.Text = "Check uit";
-                lblCheckin.ForeColor = System.Drawing.Color.Red;
+                lblCheckin.ForeColor = System.Drawing.Color.Green;
+                lblCheckin.Text = "Check in";
             }
-            System.Threading.Thread.Sleep(2000);
         }
 
         void rfid_TagLost(object sender, TagEventArgs e)
         {
+            System.Threading.Thread.Sleep(500);
             lblCheckin.Text = "Check -in/-uit";
             lblCheckin.ForeColor = System.Drawing.Color.Black;
-            System.Threading.Thread.Sleep(2000);
         }
 
         private void btnZoekPersForm_Click(object sender, EventArgs e)
@@ -68,6 +67,16 @@ namespace ToegangsApp_ICT4Events
             ZoekPersForm zoekpersoon = new ZoekPersForm();
             zoekpersoon.Show();
             this.Hide();
+            rfid.close();
+        }
+
+        private void ClosingForm(object sender, FormClosingEventArgs e)
+        {
+            if (rfid.Attached == true)
+            {
+                rfid.LED = false;
+            }
+
         }
 
     }
