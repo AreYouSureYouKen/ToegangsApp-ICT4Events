@@ -33,6 +33,8 @@
             this.btnZoekPers = new System.Windows.Forms.Button();
             this.btnLinkRFID = new System.Windows.Forms.Button();
             this.lblNaam = new System.Windows.Forms.Label();
+            this.lblBetaald = new System.Windows.Forms.Label();
+            this.btnBetaal = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tbDocNr
@@ -83,11 +85,33 @@
             this.lblNaam.TabIndex = 4;
             this.lblNaam.Text = "Naam:";
             // 
+            // lblBetaald
+            // 
+            this.lblBetaald.AutoSize = true;
+            this.lblBetaald.Location = new System.Drawing.Point(12, 76);
+            this.lblBetaald.Name = "lblBetaald";
+            this.lblBetaald.Size = new System.Drawing.Size(60, 17);
+            this.lblBetaald.TabIndex = 5;
+            this.lblBetaald.Text = "Betaald:";
+            // 
+            // btnBetaal
+            // 
+            this.btnBetaal.Location = new System.Drawing.Point(239, 77);
+            this.btnBetaal.Name = "btnBetaal";
+            this.btnBetaal.Size = new System.Drawing.Size(75, 23);
+            this.btnBetaal.TabIndex = 6;
+            this.btnBetaal.Text = "Betalen";
+            this.btnBetaal.UseVisualStyleBackColor = true;
+            this.btnBetaal.Visible = false;
+            this.btnBetaal.Click += new System.EventHandler(this.btnBetaal_Click);
+            // 
             // ZoekPersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 78);
+            this.ClientSize = new System.Drawing.Size(319, 102);
+            this.Controls.Add(this.btnBetaal);
+            this.Controls.Add(this.lblBetaald);
             this.Controls.Add(this.lblNaam);
             this.Controls.Add(this.btnLinkRFID);
             this.Controls.Add(this.btnZoekPers);
@@ -109,5 +133,7 @@
         private System.Windows.Forms.Button btnZoekPers;
         private System.Windows.Forms.Button btnLinkRFID;
         private System.Windows.Forms.Label lblNaam;
+        private System.Windows.Forms.Label lblBetaald;
+        private System.Windows.Forms.Button btnBetaal;
     }
 }

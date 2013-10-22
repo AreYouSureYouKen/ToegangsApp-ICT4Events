@@ -37,21 +37,50 @@ namespace ToegangsApp_ICT4Events
         }
 
 
-        public string ZoekPersoon(string DocumentNr)
+        public string[] ZoekPersoon(string DocumentNr)
         {
-            DataRow naam = connectie.SingleSelect("Bezoeker", "*", "Documentnr = '" + DocumentNr+"'");
-            return naam["Naam"].ToString();
+            List<string> Naam = new List<string>();
+            try
+            {
+                DataRow naam = connectie.SingleSelect("Bezoeker b, reservering r, reservering_bezoeker rb", "b.Naam, r.IsBetaald", "b.bezoekerID = rb.bezoekerID AND r.reserveringid = rb.reserveringid AND Documentnr = '" + DocumentNr + "'");
+                Naam.Add(naam["Naam"].ToString());
+                Naam.Add(naam["IsBetaald"].ToString());
+
+
+                return Naam.ToArray();
+            }
+            catch {
+                Naam.Add("Geen persoon gevonden");
+                Naam.Add("Geen betaling gevonden");
+                return Naam.ToArray();
+            }
         }
+
+        public string Betaal(string Naam)
+        {
+            string gelukt;
+            
+            try
+            {
+                connectie.Update("reservering r, bezoeker b, reservering_bezoeker rb", "IsBetaald ='Y'", "b.bezoekerID = rb.bezoekerID AND r.reserveringid = rb.reserveringid AND Naam = '" + Naam + "'");
+                gelukt = "Betaald.";
+            }
+            catch
+            {
+                gelukt = "Mislukt.";
+            }
+
+            return gelukt;
+        }
+        
         private RFID rfid = new RFID();
         public string LinkRFID(string DocumentNr)
         {
             try
             {
                 rfid.open();
-                rfid.waitForAttachment(2000);
                 string antwoord = "Geen RFID aangesloten";
-                if (rfid.Attached == true)
-                {
+                rfid.waitForAttachment(2000);
                     antwoord = "Geen RFID tag gevonden";
                     for (int i = 0; rfid.TagPresent == false; i++ )
                     {
@@ -67,7 +96,6 @@ namespace ToegangsApp_ICT4Events
                     connectie.Update("Bezoeker", "RFID = '" + rfid.LastTag + "'", "documentnr ='" + DocumentNr + "'");
                     antwoord = "RFID Link succesvol";
 
-                }
                 return antwoord;
             }
             catch(PhidgetException)

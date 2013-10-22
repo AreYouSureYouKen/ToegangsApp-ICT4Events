@@ -20,9 +20,18 @@ namespace ToegangsApp_ICT4Events
 
         private void btnZoekPers_Click(object sender, EventArgs e)
         {
-            string naam = toegang.ZoekPersoon(tbDocNr.Text);
-            lblNaam.Text = naam;
+            string[] naam = toegang.ZoekPersoon(tbDocNr.Text);
+            lblNaam.Text = naam[0];
+            lblBetaald.Text = naam[1];
             btnLinkRFID.Enabled = true;
+            if (naam[1] == "N")
+            {
+                btnBetaal.Visible = true;
+            }
+            else
+            {
+                btnBetaal.Visible = false;
+            }
         }
 
         private void btnLinkRFID_Click(object sender, EventArgs e)
@@ -40,6 +49,12 @@ namespace ToegangsApp_ICT4Events
         {
             ToegangsAppForm toegang = new ToegangsAppForm();
             toegang.Show();
+        }
+
+        private void btnBetaal_Click(object sender, EventArgs e)
+        {
+            string betaald = toegang.Betaal(lblNaam.Text);
+            lblBetaald.Text = betaald;
         }
 
 
