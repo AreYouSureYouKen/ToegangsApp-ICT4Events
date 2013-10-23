@@ -106,5 +106,10 @@ namespace ToegangsApp_ICT4Events
         }
 
 
+        public void CloseRFID()
+        {
+            rfid.close();
+        }
+
     }
 }

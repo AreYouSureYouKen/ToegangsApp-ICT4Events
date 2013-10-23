@@ -47,8 +47,9 @@ namespace ToegangsApp_ICT4Events
 
         private void Close_Click(object sender, FormClosedEventArgs e)
         {
-            ToegangsAppForm toegang = new ToegangsAppForm();
-            toegang.Show();
+            toegang.CloseRFID();
+            ToegangsAppForm toegangForm = new ToegangsAppForm();
+            toegangForm.Show();
         }
 
         private void btnBetaal_Click(object sender, EventArgs e)
