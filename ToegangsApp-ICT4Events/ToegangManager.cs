@@ -13,6 +13,7 @@ namespace ToegangsApp_ICT4Events
     class ToegangManager
     {        
         private Interface_ICT4events.DBconnect connectie = Interface_ICT4events.DBconnect.Instantie;
+        // maakt een instantie aan van de database connectie voor het updaten van de velden.
         public bool VeranderAanAfwezig(string RFIDtag)
         {
             try
@@ -35,6 +36,8 @@ namespace ToegangsApp_ICT4Events
             {
                 return false;
             }
+            // probeert de bezoeker te vinden vanuit de database via de RFID tag en zet het over op aanwezig of afwezig
+            // als er geen gevonden word dan word er afwezig teruggegeven naar het formulier
         }
 
 
@@ -55,6 +58,8 @@ namespace ToegangsApp_ICT4Events
                 Naam.Add("Geen betaling gevonden");
                 return Naam.ToArray();
             }
+            /// probeert een bezoeker uit de database op te halen door middel van zijn/haar documentnr
+            /// als dit niet lukt word er terugestuurd dat er niemand gevonden is
         }
 
         public string Betaal(string Naam)
@@ -72,6 +77,8 @@ namespace ToegangsApp_ICT4Events
             }
 
             return gelukt;
+            /// probeert de betaling om te zetten naar betaald in de database
+            /// wanneer dit niet lukt word er teruggegeven dat dit mislukt is.
         }
 
         public void Aanwezigen()
@@ -84,6 +91,7 @@ namespace ToegangsApp_ICT4Events
                 {
                     sw.WriteLine(aan["naam"].ToString());
                 }
+            /// schrijft een lijst weg van alle aanwezigen in een textbestand op de desktop van de gebruiker
         }
         
         private RFID rfid = new RFID();
@@ -115,6 +123,8 @@ namespace ToegangsApp_ICT4Events
             {
                 return "Error.";
             }
+            /// dit probeert een RFID tag toe te voegen aan de gevonden bezoeker, hier word een bepaalde tijd voor
+            /// vrijgemaakt voordat dit een error terug geeft als er geen tag gevonden is.
             
         }
 

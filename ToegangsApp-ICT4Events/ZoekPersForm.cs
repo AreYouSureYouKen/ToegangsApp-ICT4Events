@@ -32,12 +32,15 @@ namespace ToegangsApp_ICT4Events
             {
                 btnBetaal.Visible = false;
             }
+            /// hiermee word de naam opgehaald van de bezoeker en een aantal gegevens weergegeven
+            /// tevens worden er een of meerdere knoppen aan gezet
         }
 
         private void btnLinkRFID_Click(object sender, EventArgs e)
         {
             string antwoord = toegang.LinkRFID(tbDocNr.Text);
             lblNaam.Text = antwoord;
+            /// hiermee krijg je te zien of het linken van de tag is gelukt.
         }
 
         private void ZoekPersForm_Load(object sender, EventArgs e)
@@ -50,12 +53,15 @@ namespace ToegangsApp_ICT4Events
             toegang.CloseRFID();
             ToegangsAppForm toegangForm = new ToegangsAppForm();
             toegangForm.Show();
+            /// wanneer het zoek persoon formulier gesloten word, word het toegangsformulier
+            /// weer weergegeven
         }
 
         private void btnBetaal_Click(object sender, EventArgs e)
         {
             string betaald = toegang.Betaal(lblNaam.Text);
             lblBetaald.Text = betaald;
+            /// hiermee krijg je te zien of het betalen gelukt is.
         }
 
 
