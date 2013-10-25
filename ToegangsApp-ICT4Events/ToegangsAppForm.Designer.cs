@@ -30,6 +30,7 @@
         {
             this.lblCheckin = new System.Windows.Forms.Label();
             this.btnZoekPersForm = new System.Windows.Forms.Button();
+            this.btnToonAanwezig = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblCheckin
@@ -53,11 +54,23 @@
             this.btnZoekPersForm.UseVisualStyleBackColor = true;
             this.btnZoekPersForm.Click += new System.EventHandler(this.btnZoekPersForm_Click);
             // 
+            // btnToonAanwezig
+            // 
+            this.btnToonAanwezig.AutoSize = true;
+            this.btnToonAanwezig.Location = new System.Drawing.Point(179, 42);
+            this.btnToonAanwezig.Name = "btnToonAanwezig";
+            this.btnToonAanwezig.Size = new System.Drawing.Size(131, 27);
+            this.btnToonAanwezig.TabIndex = 4;
+            this.btnToonAanwezig.Text = "Toon Aanwezigen";
+            this.btnToonAanwezig.UseVisualStyleBackColor = true;
+            this.btnToonAanwezig.Click += new System.EventHandler(this.btnToonAanwezig_Click);
+            // 
             // ToegangsAppForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(320, 53);
+            this.ClientSize = new System.Drawing.Size(320, 74);
+            this.Controls.Add(this.btnToonAanwezig);
             this.Controls.Add(this.btnZoekPersForm);
             this.Controls.Add(this.lblCheckin);
             this.Name = "ToegangsAppForm";
@@ -72,6 +85,7 @@
 
         private System.Windows.Forms.Label lblCheckin;
         private System.Windows.Forms.Button btnZoekPersForm;
+        private System.Windows.Forms.Button btnToonAanwezig;
     }
 }
 

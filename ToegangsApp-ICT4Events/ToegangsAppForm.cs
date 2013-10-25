@@ -79,5 +79,11 @@ namespace ToegangsApp_ICT4Events
 
         }
 
+        private void btnToonAanwezig_Click(object sender, EventArgs e)
+        {
+            toegang.Aanwezigen();
+            MessageBox.Show("Bestand succesvol naar uw desktop geschreven.");
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,6 +72,18 @@ namespace ToegangsApp_ICT4Events
             }
 
             return gelukt;
+        }
+
+        public void Aanwezigen()
+        {
+            DataTable aanwezig = new DataTable();
+            aanwezig = connectie.SelectMultiple("bezoeker", "Naam", "Aanwezig = 'Y'");
+            using (StreamWriter sw = File.CreateText(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Aanwezigen.txt")))
+                foreach (DataRow aan in aanwezig.Rows)
+                {
+                    sw.WriteLine(aan["naam"].ToString());
+                }
         }
         
         private RFID rfid = new RFID();
