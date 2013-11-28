@@ -4,30 +4,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 using Phidgets;
 using Phidgets.Events;
-using System.Data;
 
 namespace ToegangsApp_ICT4Events
 {
-    class ToegangManager
+    public class ToegangManager
     {        
         private Interface_ICT4events.DBconnect connectie = Interface_ICT4events.DBconnect.Instantie;
-        // maakt een instantie aan van de database connectie voor het updaten van de velden.
-        public bool VeranderAanAfwezig(string RFIDtag)
+        private RFID rfid = new RFID();
+
+        /// maakt een instantie aan van de database connectie voor het updaten van de velden.
+        /// Maakt tevens ook een rfid instantie aan wat verderop in de klasse gebruikt word
+        
+        public bool VeranderAanAfwezig(string rfidtag)
         {
             try
             {
                 bool aanwezigheid;
-                DataRow AanAfwezig = connectie.SingleSelect("bezoeker", "BezoekerID,Aanwezig", "RFID = '" + RFIDtag + "'");
-                if (AanAfwezig["Aanwezig"].ToString() == "Y")
+                DataRow aanAfwezig = this.connectie.SingleSelect("bezoeker", "BezoekerID,Aanwezig", "RFID = '" + rfidtag + "'");
+                if (aanAfwezig["Aanwezig"].ToString() == "Y")
                 {
-                    connectie.Update("bezoeker", "Aanwezig = 'N'", "BezoekerID = '" + AanAfwezig["BezoekerID"].ToString() + "'");
+                    this.connectie.Update("bezoeker", "Aanwezig = 'N'", "BezoekerID = '" + aanAfwezig["BezoekerID"].ToString() + "'");
                     aanwezigheid = false;
                 }
                 else
                 {
-                    connectie.Update("bezoeker", "Aanwezig = 'Y'", "BezoekerID = '" + AanAfwezig["BezoekerID"].ToString() + "'");
+                    this.connectie.Update("bezoeker", "Aanwezig = 'Y'", "BezoekerID = '" + aanAfwezig["BezoekerID"].ToString() + "'");
                     aanwezigheid = true;
                 }
                 return aanwezigheid;
@@ -36,39 +40,36 @@ namespace ToegangsApp_ICT4Events
             {
                 return false;
             }
-            // probeert de bezoeker te vinden vanuit de database via de RFID tag en zet het over op aanwezig of afwezig
-            // als er geen gevonden word dan word er afwezig teruggegeven naar het formulier
+            /// probeert de bezoeker te vinden vanuit de database via de RFID tag en zet het over op aanwezig of afwezig
+            /// als er geen gevonden word dan word er afwezig teruggegeven naar het formulier
         }
 
-
-        public string[] ZoekPersoon(string DocumentNr)
+        public string[] ZoekPersoon(string documentNr)
         {
-            List<string> Naam = new List<string>();
+            List<string> naam = new List<string>();
             try
             {
-                DataRow naam = connectie.SingleSelect("Bezoeker b, reservering r, reservering_bezoeker rb", "b.Naam, r.IsBetaald", "b.bezoekerID = rb.bezoekerID AND r.reserveringid = rb.reserveringid AND Documentnr = '" + DocumentNr + "'");
-                Naam.Add(naam["Naam"].ToString());
-                Naam.Add(naam["IsBetaald"].ToString());
-
-
-                return Naam.ToArray();
+                DataRow sqlnaam = this.connectie.SingleSelect("Bezoeker b, reservering r, reservering_bezoeker rb", "b.Naam, r.IsBetaald", "b.bezoekerID = rb.bezoekerID AND r.reserveringid = rb.reserveringid AND Documentnr = '" + documentNr + "'");
+                naam.Add(sqlnaam["Naam"].ToString());
+                naam.Add(sqlnaam["IsBetaald"].ToString());
+                return naam.ToArray();
             }
             catch {
-                Naam.Add("Geen persoon gevonden");
-                Naam.Add("Geen betaling gevonden");
-                return Naam.ToArray();
+                naam.Add("Geen persoon gevonden");
+                naam.Add("Geen betaling gevonden");
+                return naam.ToArray();
             }
             /// probeert een bezoeker uit de database op te halen door middel van zijn/haar documentnr
             /// als dit niet lukt word er terugestuurd dat er niemand gevonden is
         }
 
-        public string Betaal(string Naam)
+        public string Betaal(string naam)
         {
             string gelukt;
             
             try
             {
-                connectie.Update("reservering r, bezoeker b, reservering_bezoeker rb", "IsBetaald ='Y'", "b.bezoekerID = rb.bezoekerID AND r.reserveringid = rb.reserveringid AND Naam = '" + Naam + "'");
+                this.connectie.Update("reservering r, bezoeker b, reservering_bezoeker rb", "IsBetaald ='Y'", "b.bezoekerID = rb.bezoekerID AND r.reserveringid = rb.reserveringid AND Naam = '" + naam + "'");
                 gelukt = "Betaald.";
             }
             catch
@@ -84,7 +85,7 @@ namespace ToegangsApp_ICT4Events
         public void Aanwezigen()
         {
             DataTable aanwezig = new DataTable();
-            aanwezig = connectie.SelectMultiple("bezoeker", "Naam", "Aanwezig = 'Y'");
+            aanwezig = this.connectie.SelectMultiple("bezoeker", "Naam", "Aanwezig = 'Y'");
             using (StreamWriter sw = File.CreateText(
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Aanwezigen.txt")))
                 foreach (DataRow aan in aanwezig.Rows)
@@ -94,27 +95,26 @@ namespace ToegangsApp_ICT4Events
             /// schrijft een lijst weg van alle aanwezigen in een textbestand op de desktop van de gebruiker
         }
         
-        private RFID rfid = new RFID();
-        public string LinkRFID(string DocumentNr)
+        public string LinkRFID(string documentNr)
         {
             try
             {
-                rfid.open();
+                this.rfid.open();
                 string antwoord = "Geen RFID aangesloten";
-                rfid.waitForAttachment(2000);
+                this.rfid.waitForAttachment(2000);
                     antwoord = "Geen RFID tag gevonden";
-                    for (int i = 0; rfid.TagPresent == false; i++ )
+                    for (int i = 0; this.rfid.TagPresent == false; i++ )
                     {
                         if (i == 10000000)
                         {
                             break;
                         }
-                        if (rfid.TagPresent == true)
+                        if (this.rfid.TagPresent == true)
                         {
                             break;
                         }
                     }
-                    connectie.Update("Bezoeker", "RFID = '" + rfid.LastTag + "'", "documentnr ='" + DocumentNr + "'");
+                    this.connectie.Update("Bezoeker", "RFID = '" + this.rfid.LastTag + "'", "documentnr ='" + documentNr + "'");
                     antwoord = "RFID Link succesvol";
 
                 return antwoord;
@@ -128,10 +128,9 @@ namespace ToegangsApp_ICT4Events
             
         }
 
-
         public void CloseRFID()
         {
-            rfid.close();
+            this.rfid.close();
         }
 
     }

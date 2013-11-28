@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace ToegangsApp_ICT4Events
 {
-    class HHuurder : Huurder
+    public class HHuurder : Huurder
     {
         private string emailadres;
         private string rekeningnummer;
 
-        public HHuurder(string Emailadres, string Rekeningnummer, bool Aanwezig, string Adres, string Documentnr, string Geboortedatum, string Naam, int RFIDCode, string Woonplaats)
-            : base(Aanwezig,Adres,Documentnr,Geboortedatum,Naam,RFIDCode,Woonplaats)
+        public HHuurder(string emailadres, string rekeningnummer, bool aanwezig, string adres, string documentnr, string geboortedatum, string naam, int rfidCode, string woonplaats)
+            : base(aanwezig,adres,documentnr,geboortedatum,naam,rfidCode,woonplaats)
         {
-            emailadres = Emailadres;
-            rekeningnummer = Rekeningnummer;
+            this.emailadres = emailadres;
+            this.rekeningnummer = rekeningnummer;
         }
     }
 }
